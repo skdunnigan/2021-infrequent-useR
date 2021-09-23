@@ -1,0 +1,133 @@
+---
+title: "My Water Quality Report"
+author: "Shannon"
+date: "9/23/2021"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+ 
+
+```{r setup, include = FALSE}
+# this chunk is to set up your "preferences"
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+
+library(janitor)
+library(here)
+library(readxl)
+library(knitr)
+library(plotly)
+library(kableExtra)  # https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html 
+library(broom)
+library(rmarkdown)
+library(ggpubr)
+library(tidyverse)
+
+```
+
+```{r load-data, include = FALSE}
+wq <- readr::read_csv(here::here("data", "monthly_wq.csv"))
+
+# look at my data
+# View(wq)
+head(wq)
+tail(wq)
+str(wq)
+dplyr::glimpse(wq)
+
+unique(wq$station_code)
+unique(wq$state)
+unique(wq$coast)
+```
+
+# Are there differences in water temperature and dissolved oxygen between states?
+
+Continuous water quality is collected by the NERRS...SWMP. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. Tortor at risus viverra adipiscing. Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. Tortor at risus viverra adipiscing. Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
+
+```{r image-station, echo = FALSE, out.width = "40%", fig.align = "center"}
+knitr::include_graphics(here::here("images", "gtmpiwq.jpg"))
+```
+
+```{r wrangle, include = FALSE}
+wq_adj <- wq %>%
+  dplyr::select(state, temp, do_mgl)
+
+View(wq_adj)
+```
+
+## Water temperature varies across states
+
+```{r boxplot-temp, echo = FALSE}
+ggplot(data = wq_adj, mapping = aes(x = state, y = temp)) +
+  geom_boxplot(mapping = aes(fill = state)) +
+  geom_point() +
+  theme_classic() +
+  theme(legend.position = "none") +
+  labs(x = "State",
+       y = "Average Monthly Temperature (\U00B0 C)",
+       title = "Is water temperature different between states?")
+```
+
+```{r image-sonde, echo = FALSE, out.width = "30%", out.extra = 'style = "float:left; padding:10px"'}
+knitr::include_graphics(here::here("images", "2021-03-31_STanner-sonde.jpg"))
+```
+
+
+```{r summary-table-temp, echo = FALSE}
+# library(magrittr)
+
+wq_adj %>%
+  dplyr::select(-do_mgl) %>%
+  dplyr::group_by(state) %>%
+  dplyr::summarise(Min = min(temp),
+                   Max = max(temp),
+                   Mean = mean(temp, na.rm = TRUE),
+                   StDev = sd(temp, na.rm = TRUE)) %>% 
+  dplyr::rename(State = state) %>% 
+  kableExtra::kbl(align = "c",
+                  caption = "Water Temperature (\U00B0 C) summary statistics for each state.") %>% 
+  kableExtra::kable_styling(fixed_thead = TRUE) %>% 
+  kableExtra::row_spec(0, bold = TRUE) %>% 
+  kableExtra::column_spec(1, border_right = TRUE) %>% 
+  kableExtra::kable_classic(c('striped', 'hover'), full_width = FALSE)
+```
+
+```{r anova, include = FALSE}
+aov_out <- stats::aov(temp ~ state, data = wq_adj)
+summary(aov_out)
+
+# then use the 'broom' package
+broom::tidy(aov_out)
+broom::glance(aov_out)
+
+# pull out the p.value
+aov_broom <- broom::tidy(aov_out)
+aov_broom$p.value[1]
+
+broom::tidy(stats::aov(temp ~ state, data = wq_adj))
+```
+
+```{r anova-public, echo = FALSE}
+broom::tidy(stats::aov(temp ~ state, data = wq_adj))
+```
+
+# Is there a relationship between dissolved oxygen and temperature?
+
+```{r scatterplot, echo = FALSE}
+ggplot(wq_adj, mapping = aes(x = temp, y = do_mgl)) +
+  geom_point(mapping = aes(color = state)) +
+  geom_smooth(method = "lm", color = "black") +
+  scale_color_discrete(name = "State") +
+  theme_classic() +
+  labs(x = "Average Monthly Temperature (\U00B0 C)",
+       y = "Average Monthly Dissolved Oxygen (mg/L)",
+       title = "Is there a relationship between DO and Temperature?")
+
+
+
+```
+
