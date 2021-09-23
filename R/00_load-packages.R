@@ -5,7 +5,7 @@
 
 workshop.packages <- c("tidyverse", "janitor", "here", "readxl", 
                        "knitr", "plotly", "kableExtra", "broom",
-                       "rmarkdown")
+                       "rmarkdown", "ggpubr")
 install.packages(workshop.packages)
 
 # 01 "I'm good. Just need to load them to use for the Workshop" ----
@@ -18,3 +18,4 @@ library(plotly)
 library(kableExtra)  # https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html 
 library(broom)
 library(rmarkdown)
+library(ggpubr)
