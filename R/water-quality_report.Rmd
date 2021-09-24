@@ -2,12 +2,13 @@
 title: "My Water Quality Report"
 author: "Shannon"
 date: "9/23/2021"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 editor_options: 
   chunk_output_type: console
 ---
-
- 
 
 ```{r setup, include = FALSE}
 # this chunk is to set up your "preferences"
@@ -32,10 +33,10 @@ wq <- readr::read_csv(here::here("data", "monthly_wq.csv"))
 
 # look at my data
 # View(wq)
-head(wq)
-tail(wq)
-str(wq)
-dplyr::glimpse(wq)
+# head(wq)
+# tail(wq)
+# str(wq)
+# dplyr::glimpse(wq)
 
 unique(wq$station_code)
 unique(wq$state)
@@ -46,7 +47,9 @@ unique(wq$coast)
 
 Continuous water quality is collected by the NERRS...SWMP. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. Tortor at risus viverra adipiscing. Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. Tortor at risus viverra adipiscing. Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
+## The System-Wide Monitoring Program
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. **Tortor at risus viverra adipiscing.** Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
 
 ```{r image-station, echo = FALSE, out.width = "40%", fig.align = "center"}
 knitr::include_graphics(here::here("images", "gtmpiwq.jpg"))
@@ -56,15 +59,17 @@ knitr::include_graphics(here::here("images", "gtmpiwq.jpg"))
 wq_adj <- wq %>%
   dplyr::select(state, temp, do_mgl)
 
-View(wq_adj)
+# View(wq_adj)
 ```
 
 ## Water temperature varies across states
 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. **Tortor at risus viverra adipiscing.** Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
+
 ```{r boxplot-temp, echo = FALSE}
 ggplot(data = wq_adj, mapping = aes(x = state, y = temp)) +
   geom_boxplot(mapping = aes(fill = state)) +
-  geom_point() +
+  geom_point(position = "jitter") +
   theme_classic() +
   theme(legend.position = "none") +
   labs(x = "State",
@@ -76,6 +81,9 @@ ggplot(data = wq_adj, mapping = aes(x = state, y = temp)) +
 knitr::include_graphics(here::here("images", "2021-03-31_STanner-sonde.jpg"))
 ```
 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. **Tortor at risus viverra adipiscing.** Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
+
+# HEADLINE: Alaska is colder than Florida
 
 ```{r summary-table-temp, echo = FALSE}
 # library(magrittr)
@@ -93,8 +101,10 @@ wq_adj %>%
   kableExtra::kable_styling(fixed_thead = TRUE) %>% 
   kableExtra::row_spec(0, bold = TRUE) %>% 
   kableExtra::column_spec(1, border_right = TRUE) %>% 
-  kableExtra::kable_classic(c('striped', 'hover'), full_width = FALSE)
+  kableExtra::kable_classic(c('striped'), full_width = FALSE)
 ```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel. Nullam vehicula ipsum a arcu cursus vitae congue mauris. Eget sit amet tellus cras adipiscing. Donec enim diam vulputate ut pharetra sit amet aliquam id. Pellentesque dignissim enim sit amet venenatis. Pulvinar etiam non quam lacus suspendisse faucibus interdum posuere lorem. Fusce id velit ut tortor. Tortor at risus viverra adipiscing. Amet consectetur adipiscing elit pellentesque. Sed augue lacus viverra vitae congue eu consequat ac felis. Eget dolor morbi non arcu risus quis varius quam quisque. Facilisis sed odio morbi quis commodo odio aenean. Nunc sed velit dignissim sodales ut eu sem integer.
 
 ```{r anova, include = FALSE}
 aov_out <- stats::aov(temp ~ state, data = wq_adj)
@@ -112,13 +122,21 @@ broom::tidy(stats::aov(temp ~ state, data = wq_adj))
 ```
 
 ```{r anova-public, echo = FALSE}
-broom::tidy(stats::aov(temp ~ state, data = wq_adj))
+broom::tidy(stats::aov(temp ~ state, data = wq_adj)) %>% 
+  kableExtra::kbl(align = "c",
+                  caption = "Water Temperature (\U00B0 C) ANOVA results.") %>% 
+  kableExtra::kable_styling(fixed_thead = TRUE) %>% 
+  kableExtra::row_spec(0, bold = TRUE) %>% 
+  kableExtra::column_spec(1, border_right = TRUE) %>% 
+  kableExtra::kable_classic(c('striped'), full_width = FALSE)
 ```
 
 # Is there a relationship between dissolved oxygen and temperature?
 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus. In iaculis nunc sed augue lacus viverra vitae. Massa eget egestas purus viverra accumsan in nisl nisi. Risus viverra adipiscing at in tellus integer feugiat scelerisque. Phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam. Varius duis at consectetur lorem donec massa sapien faucibus et. Vestibulum sed arcu non odio. Et netus et malesuada fames ac turpis egestas. Hac habitasse platea dictumst quisque sagittis purus sit amet. Placerat in egestas erat imperdiet sed euismod nisi porta lorem. Ac turpis egestas integer eget aliquet. Sed nisi lacus sed viverra tellus in. Quis viverra nibh cras pulvinar.
+
 ```{r scatterplot, echo = FALSE}
-ggplot(wq_adj, mapping = aes(x = temp, y = do_mgl)) +
+ggplotly(ggplot(wq_adj, mapping = aes(x = temp, y = do_mgl)) +
   geom_point(mapping = aes(color = state)) +
   geom_smooth(method = "lm", color = "black") +
   scale_color_discrete(name = "State") +
@@ -126,8 +144,76 @@ ggplot(wq_adj, mapping = aes(x = temp, y = do_mgl)) +
   labs(x = "Average Monthly Temperature (\U00B0 C)",
        y = "Average Monthly Dissolved Oxygen (mg/L)",
        title = "Is there a relationship between DO and Temperature?")
+)
+```
 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus. In iaculis nunc sed augue lacus viverra vitae. Massa eget egestas purus viverra accumsan in nisl nisi. Risus viverra adipiscing at in tellus integer feugiat scelerisque. Phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam. Varius duis at consectetur lorem donec massa sapien faucibus et. Vestibulum sed arcu non odio. Et netus et malesuada fames ac turpis egestas. Hac habitasse platea dictumst quisque sagittis purus sit amet. Placerat in egestas erat imperdiet sed euismod nisi porta lorem. Ac turpis egestas integer eget aliquet. Sed nisi lacus sed viverra tellus in. Quis viverra nibh cras pulvinar.
 
+Consectetur purus ut faucibus pulvinar elementum. Amet consectetur adipiscing elit pellentesque habitant morbi tristique. Pellentesque elit ullamcorper dignissim cras tincidunt. Amet risus nullam eget felis eget. Urna neque viverra justo nec ultrices dui sapien eget. Orci eu lobortis elementum nibh tellus molestie. Consequat interdum varius sit amet mattis. Sed vulputate odio ut enim blandit. Aenean pharetra magna ac placerat vestibulum. Massa vitae tortor condimentum lacinia quis vel eros donec ac.
+
+Nisl suscipit adipiscing bibendum est ultricies. Tortor consequat id porta nibh. Quis commodo odio aenean sed adipiscing diam. Tincidunt lobortis feugiat vivamus at. Vitae auctor eu augue ut lectus arcu bibendum. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Ut consequat semper viverra nam libero. Risus quis varius quam quisque. Ullamcorper velit sed ullamcorper morbi tincidunt. Tincidunt id aliquet risus feugiat in ante metus dictum at. Potenti nullam ac tortor vitae purus faucibus ornare suspendisse sed. In ante metus dictum at tempor commodo. Tellus cras adipiscing enim eu turpis egestas pretium. Lorem mollis aliquam ut porttitor leo a. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Ut pharetra sit amet aliquam id. Eu non diam phasellus vestibulum lorem sed. Mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.
+
+```{r lm-do, include = FALSE}
+lm_out <- stats::lm(do_mgl ~ temp, data = wq_adj)
+summary(lm_out)
+
+# use the `broom` package
+broom::tidy(lm_out)
+broom::glance(lm_out)
+
+# combine it all together
+broom::tidy(stats::lm(do_mgl ~ temp, data = wq_adj))
+```
+
+```{r lm-do-public, echo = FALSE}
+broom::tidy(stats::lm(do_mgl ~ temp, data = wq_adj)) %>%
+  kableExtra::kbl(align = "c",
+                  caption = "Dissolved Oxygen (mg/L) vs Water Temperature (\U00B0 C) Linear Regression results.") %>% 
+  kableExtra::kable_styling(fixed_thead = TRUE) %>% 
+  kableExtra::row_spec(0, bold = TRUE) %>% 
+  kableExtra::column_spec(1, border_right = TRUE) %>% 
+  kableExtra::kable_classic(c('striped'), full_width = FALSE)
+```
+
+```{r scatterplot-equations, echo = FALSE}
+ggplot(wq_adj, mapping = aes(x = temp, y = do_mgl)) +
+  geom_point(mapping = aes(color = state)) +
+  geom_smooth(method = "lm", color = "black") +
+  ggpubr::stat_regline_equation(label.x = 25) +
+  ggpubr::stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "~` , `~")), 
+                   label.x = 25, label.y = 9.7) +
+  scale_color_discrete(name = "State") +
+  theme_classic() +
+  labs(x = "Average Monthly Temperature (\U00B0 C)",
+       y = "Average Monthly Dissolved Oxygen (mg/L)",
+       title = "Is there a relationship between DO and Temperature?")
 
 ```
 
+Nisl suscipit adipiscing bibendum est ultricies. Tortor consequat id porta nibh. Quis commodo odio aenean sed adipiscing diam. Tincidunt lobortis feugiat vivamus at. Vitae auctor eu augue ut lectus arcu bibendum. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Ut consequat semper viverra nam libero. Risus quis varius quam quisque. Ullamcorper velit sed ullamcorper morbi tincidunt. Tincidunt id aliquet risus feugiat in ante metus dictum at. Potenti nullam ac tortor vitae purus faucibus ornare suspendisse sed. In ante metus dictum at tempor commodo. Tellus cras adipiscing enim eu turpis egestas pretium. Lorem mollis aliquam ut porttitor leo a. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Ut pharetra sit amet aliquam id. Eu non diam phasellus vestibulum lorem sed. Mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.
+
+## Dissolved oxygen by state {.tabset .tabset-pills}
+
+### Florida
+
+Nisl suscipit adipiscing bibendum est ultricies. Tortor consequat id porta nibh. Quis commodo odio aenean sed adipiscing diam. Tincidunt lobortis feugiat vivamus at. Vitae auctor eu augue ut lectus arcu bibendum. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Ut consequat semper viverra nam libero. Risus quis varius quam quisque. Ullamcorper velit sed ullamcorper morbi tincidunt. Tincidunt id aliquet risus feugiat in ante metus dictum at. Potenti nullam ac tortor vitae purus faucibus ornare suspendisse sed. In ante metus dictum at tempor commodo. Tellus cras adipiscing enim eu turpis egestas pretium. Lorem mollis aliquam ut porttitor leo a. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Ut pharetra sit amet aliquam id. Eu non diam phasellus vestibulum lorem sed. Mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.
+
+```{r scatterplot-florida, echo = FALSE}
+wq_adj %>%
+  dplyr::filter(state == "Florida") %>%
+  ggplot(aes(x = temp, y = do_mgl)) +
+  geom_point() +
+  labs(title = "Florida")
+```
+
+### California
+
+```{r scatterplot-cali, echo = FALSE}
+wq_adj %>%
+  dplyr::filter(state == "California") %>%
+  ggplot(aes(x = temp, y = do_mgl)) +
+  geom_point() +
+  labs(title = "California")
+```
+
+Nisl suscipit adipiscing bibendum est ultricies. Tortor consequat id porta nibh. Quis commodo odio aenean sed adipiscing diam. Tincidunt lobortis feugiat vivamus at. Vitae auctor eu augue ut lectus arcu bibendum. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Ut consequat semper viverra nam libero. Risus quis varius quam quisque. Ullamcorper velit sed ullamcorper morbi tincidunt. Tincidunt id aliquet risus feugiat in ante metus dictum at. Potenti nullam ac tortor vitae purus faucibus ornare suspendisse sed. In ante metus dictum at tempor commodo. Tellus cras adipiscing enim eu turpis egestas pretium. Lorem mollis aliquam ut porttitor leo a. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Ut pharetra sit amet aliquam id. Eu non diam phasellus vestibulum lorem sed. Mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper.
